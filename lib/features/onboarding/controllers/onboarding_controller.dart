@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_travel_alearm/constant/app_routes.dart';
 import '../../../constant/app_assets.dart';
 
 class OnboardingController extends GetxController {
@@ -48,6 +49,6 @@ class OnboardingController extends GetxController {
   }
 
   void goToLocation() {
-    Get.offAllNamed('/location');
+    Get.offAllNamed(AppRoutes.location);
   }
 }
