@@ -1,53 +1,110 @@
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:smart_travel_alearm/constant/app_routes.dart';
 
 class LocationController extends GetxController {
-  RxString locationText = "No location selected".obs;
+
+  RxString locationText = "Checking location permission...".obs;
   RxBool isLoading = false.obs;
+  RxBool hasLocation = false.obs;
+  RxBool isPermissionGranted = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    checkPermissionOnStart();
+  }
+
+
+  Future<void> checkPermissionOnStart() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) {
+      locationText.value = "Location services are disabled.";
+      isPermissionGranted.value = false;
+      hasLocation.value = false;
+      return;
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      locationText.value = "Location permission required.";
+      isPermissionGranted.value = false;
+      hasLocation.value = false;
+      return;
+    }
+
+    isPermissionGranted.value = true;
+    locationText.value = "Permission granted. Tap to get location.";
+  }
+
 
   Future<void> getCurrentLocation() async {
     isLoading.value = true;
 
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      locationText.value = "Location services are disabled.";
+    if (!isPermissionGranted.value) {
+      await checkPermissionOnStart();
       isLoading.value = false;
       return;
     }
 
-    permission = await Geolocator.checkPermission();
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+        ),
+      );
 
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        locationText.value = "Location permission denied.";
-        isLoading.value = false;
-        return;
-      }
+      await _convertLatLngToAddress(
+        position.latitude,
+        position.longitude,
+      );
+
+      hasLocation.value = true;
+
+    } catch (e) {
+      locationText.value = "Failed to get location.";
+      hasLocation.value = false;
     }
-
-    if (permission == LocationPermission.deniedForever) {
-      locationText.value =
-          "Permission permanently denied. Please enable from settings.";
-      isLoading.value = false;
-      return;
-    }
-
-    Position position = await Geolocator.getCurrentPosition(
-      locationSettings: LocationSettings(accuracy: .high),
-    );
-
-    locationText.value =
-        "Lat: ${position.latitude}, Lng: ${position.longitude}";
 
     isLoading.value = false;
   }
 
+  Future<void> _convertLatLngToAddress(
+    double latitude,
+    double longitude,
+  ) async {
+    try {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+
+        locationText.value =
+            "${place.street ?? ''}, "
+            "${place.locality ?? ''}, "
+            "${place.country ?? ''}";
+      } else {
+        locationText.value = "Address not found.";
+      }
+
+    } catch (e) {
+      locationText.value = "Failed to fetch address.";
+    }
+  }
+
+
   void goToAlarmScreen() {
-    Get.toNamed(AppRoutes.location);
+    if (hasLocation.value) {
+      Get.toNamed(AppRoutes.alarm);
+    }
   }
 }

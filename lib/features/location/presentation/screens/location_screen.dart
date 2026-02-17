@@ -9,7 +9,7 @@ import '../../../../common_widgets/primary_button.dart';
 class LocationScreen extends StatelessWidget {
   LocationScreen({super.key});
 
-  final controller = Get.put(LocationController());
+  final LocationController controller = Get.put(LocationController());
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +49,7 @@ class LocationScreen extends StatelessWidget {
                     height: 1.5,
                   ),
                 ),
-
                 const Spacer(),
-
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.asset(
@@ -61,12 +59,12 @@ class LocationScreen extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-
                 const Spacer(),
-
                 Obx(
                   () => OutlinedButton(
-                    onPressed: controller.getCurrentLocation,
+                    onPressed: controller.isLoading.value
+                        ? null
+                        : controller.getCurrentLocation,
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 56),
                       side: const BorderSide(color: Colors.white30),
@@ -75,10 +73,10 @@ class LocationScreen extends StatelessWidget {
                       ),
                     ),
                     child: controller.isLoading.value
-                        ? ButtonLoading()
+                        ? const ButtonLoading()
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                            children: const [
                               Text(
                                 "Use Current Location",
                                 style: TextStyle(
@@ -96,20 +94,14 @@ class LocationScreen extends StatelessWidget {
                           ),
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
-                Obx(
-                  () => controller.locationText.value.contains("Lat")
-                      ? PrimaryButton(
-                          text: "Next",
-                          onPressed: controller.goToAlarmScreen,
-                        )
-                      : const SizedBox(height: 56),
+                PrimaryButton(
+                  text: "Next",
+                  onPressed: () => controller.hasLocation.value
+                      ? controller.goToAlarmScreen
+                      : null,
                 ),
-
-                const SizedBox(height: 10),
-
+                const SizedBox(height: 12),
                 Obx(
                   () => Text(
                     controller.locationText.value,
@@ -117,7 +109,6 @@ class LocationScreen extends StatelessWidget {
                     style: const TextStyle(color: Colors.white54, fontSize: 12),
                   ),
                 ),
-
                 const SizedBox(height: 40),
               ],
             ),
