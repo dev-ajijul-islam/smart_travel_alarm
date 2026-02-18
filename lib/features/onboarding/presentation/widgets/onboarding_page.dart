@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_travel_alearm/constant/app_color.dart';
 
 class OnboardingPage extends StatelessWidget {
   final String image;
@@ -19,23 +20,21 @@ class OnboardingPage extends StatelessWidget {
       children: [
         Image.asset(image, height: 430, width: .infinity, fit: .fill),
         Padding(
-          padding: .symmetric(horizontal: 16),
+          padding: .symmetric(horizontal: 20),
           child: Column(
             children: [
               Text(
                 title,
-                textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: AppColors.white,
                 ),
               ),
               const SizedBox(height: 10),
               Text(
                 subtitle,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16, color: Colors.white70),
+                style: const TextStyle(fontSize: 16, color: AppColors.white70),
               ),
             ],
           ),

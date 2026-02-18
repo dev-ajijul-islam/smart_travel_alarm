@@ -3,14 +3,13 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
-  static final NotificationService instance = NotificationService();
-
-  final FlutterLocalNotificationsPlugin _notificationsPlugin =
+  static final FlutterLocalNotificationsPlugin _notificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> init() async {
-    tz.initializeTimeZones();
-
+  static FlutterLocalNotificationsPlugin get notificationsPlugin =>
+      _notificationsPlugin;
+      
+  static void init() async {
     const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -23,49 +22,47 @@ class NotificationService {
     );
 
     await _notificationsPlugin.initialize(settings: settings);
-  }
 
-  Future<void> requestIOSPermission() async {
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'travel_noti',
+      'Travel notification',
+      description: 'This channel is for travel alarms',
+      importance: Importance.max,
+    );
+
     await _notificationsPlugin
         .resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin
+          AndroidFlutterLocalNotificationsPlugin
         >()
-        ?.requestPermissions(alert: true, badge: true, sound: true);
+        ?.createNotificationChannel(channel);
+
+    tz.initializeTimeZones();
   }
 
-  Future<void> scheduleAlarm({
-    required int id,
-    required DateTime scheduledTime,
-    required String title,
-    required String body,
-  }) async {
-    final tz.TZDateTime tzScheduledTime = tz.TZDateTime.from(
-      scheduledTime,
-      tz.local,
-    );
-
+  static Future<void> scheduleAlarm(DateTime scheduleTime, int id) async {
     await _notificationsPlugin.zonedSchedule(
       id: id,
-      scheduledDate: tzScheduledTime,
+      title: "Travel Alarm",
+      body: "Time to travel!",
+      scheduledDate: tz.TZDateTime.from(scheduleTime, tz.local),
       notificationDetails: const NotificationDetails(
         android: AndroidNotificationDetails(
-          'full screen channel id',
-          'full screen channel name',
-          channelDescription: 'full screen channel description',
+          'travel_noti',
+          'Travel notification',
+          importance: Importance.max,
           priority: Priority.high,
-          importance: Importance.high,
-          fullScreenIntent: true,
         ),
+        iOS: DarwinNotificationDetails(),
       ),
-      androidScheduleMode: .exactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
 
-  Future<void> cancelAlarm(int id) async {
-    await _notificationsPlugin.cancel(id: id);
-  }
-
-  Future<void> cancelAll() async {
-    await _notificationsPlugin.cancelAll();
+  static Future<void> cancelAlarm(int id) async {
+    try {
+      await _notificationsPlugin.cancel(id: id);
+    } catch (e) {
+      print('Error canceling alarm: $e');
+    }
   }
 }

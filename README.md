@@ -1,16 +1,82 @@
-# smart_travel_alearm
+# smart_travel_alarm
 
-A new Flutter project.
+A Flutter application that implements a travel-themed onboarding flow, location permissions, and an alarm system with local notifications.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+* **Onboarding Screens:** 3-step introduction with skip functionality.
+* **Location Access:** Fetches and displays current location.
+* **Alarm System:** Pick time and list scheduled alarms.
+* **Notifications:** Local alerts when an alarm goes off.
+* **Persistence:** Alarms are stored locally using Hive.
 
-A few resources to get you started if this is your first Flutter project:
+## Project Structure
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+The project is organized by features to ensure scalability:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```text
+lib/
+├── common_widgets/   # Shared UI components (buttons, etc.)
+├── constant/         # App colors, assets, and routes
+├── core.services/    # Hive and Notification service logic
+├── features/         # Main app modules (alarm, location, onboarding)
+│   └── [feature]/    # controllers, data.model, presentation.screens
+├── routes/           # App navigation management
+├── app.dart          # Main app widget
+└── main.dart         # Entry point
+
+```
+
+##  App Screenshots
+
+<div align="center">
+  <table style="border: none;">
+    <tr>
+      <td><img src="screenshots/Screenshot_20260218_191514.jpg" width="220" /></td>
+      <td><img src="screenshots/Screenshot_20260218_191533.jpg" width="220" /></td>
+      <td><img src="screenshots/Screenshot_20260218_191714.jpg" width="220" /></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/Screenshot_20260218_191804.jpg" width="220" /></td>
+      <td><img src="screenshots/Screenshot_20260218_191521_Permission%20controller.jpg" width="220" /></td>
+      <td><img src="screenshots/Screenshot_20260218_191453_Permission%20controller.jpg" width="220" /></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/Screenshot_20260218_191814.jpg" width="220" /></td>
+    </tr>
+  </table>
+</div>
+
+---
+
+## Packages Used
+
+* **State Management:** `Get` (GetX)
+* **Local Database:** `Hive`
+* **Location:** `geolocator` & `geocoding`
+* **Notifications:** `flutter_local_notifications` & `timezone`
+* **Date/Time:** `intl` & `flutter_timezone`
+
+## Setup & Running
+
+1. **Fetch Dependencies:**
+```bash
+flutter pub get
+```
+
+
+2. **Platform Specifics:**
+* **Android:** `minSdkVersion` 21 in `build.gradle`.
+* **iOS:** Location and notification keys added to `Info.plist`.
+
+
+3. **Run App:**
+```bash
+flutter run
+```
+
+
+
+## Demo Link
+
+* **Loom Video:** [https://www.loom.com/share/3c05587b65c34ab49067a750cd140926]

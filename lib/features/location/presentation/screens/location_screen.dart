@@ -96,11 +96,11 @@ class LocationScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 PrimaryButton(
-                  text: "Next",
-                  onPressed: () => controller.hasLocation.value
-                      ? controller.goToAlarmScreen
-                      : null,
-                ),
+                    text: "Next",
+                    onPressed: () {
+                      controller.goToAlarmScreen();
+                    },
+                  ),
                 const SizedBox(height: 12),
                 Obx(
                   () => Text(

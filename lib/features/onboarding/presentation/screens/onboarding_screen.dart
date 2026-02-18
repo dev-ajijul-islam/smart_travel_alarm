@@ -35,7 +35,7 @@ class OnboardingScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: 50,),
+              SizedBox(height: 30,),
               Obx(() => OnboardingIndicator(
                     currentIndex: controller.currentIndex.value,
                   )),

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:smart_travel_alearm/constant/app_routes.dart';
+import '../../../constant/app_routes.dart';
 
 class LocationController extends GetxController {
 
@@ -13,11 +13,11 @@ class LocationController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    checkPermissionOnStart();
+    checkPermission();
   }
 
 
-  Future<void> checkPermissionOnStart() async {
+  Future<void> checkPermission() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
@@ -43,14 +43,14 @@ class LocationController extends GetxController {
 
     isPermissionGranted.value = true;
     locationText.value = "Permission granted. Tap to get location.";
+    getCurrentLocation();
   }
 
 
   Future<void> getCurrentLocation() async {
     isLoading.value = true;
-
     if (!isPermissionGranted.value) {
-      await checkPermissionOnStart();
+      await checkPermission();
       isLoading.value = false;
       return;
     }
