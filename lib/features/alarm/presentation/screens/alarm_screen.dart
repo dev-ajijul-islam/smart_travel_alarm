@@ -9,8 +9,8 @@ import '../../controllers/alarm_controller.dart';
 class AlarmScreen extends StatelessWidget {
   AlarmScreen({super.key});
 
-  final controller = Get.put(AlarmController());
-  final locationController = Get.put(LocationController());
+  final controller = Get.find<AlarmController>();
+  final locationController = Get.find<LocationController>();
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,7 @@ import '../../../../common_widgets/primary_button.dart';
 class LocationScreen extends StatelessWidget {
   LocationScreen({super.key});
 
-  final LocationController controller = Get.put(LocationController());
+  final LocationController controller = Get.find<LocationController>();
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ import '../../../../common_widgets/primary_button.dart';
 class OnboardingScreen extends StatelessWidget {
   OnboardingScreen({super.key});
 
-  final controller = Get.put(OnboardingController());
+  final controller = Get.find<OnboardingController>();
 
   @override
   Widget build(BuildContext context) {
