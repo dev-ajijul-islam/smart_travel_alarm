@@ -1,4 +1,4 @@
-# smart_travel_alarm
+# SmartTravelAlarm
 
 A Flutter application that implements a travel-themed onboarding flow, location permissions, and an alarm system with local notifications.
 
@@ -32,17 +32,17 @@ lib/
 <div align="center">
   <table style="border: none;">
     <tr>
-      <td><img src="screenshots/Screenshot_20260218_191514.jpg" width="220" /></td>
-      <td><img src="screenshots/Screenshot_20260218_191533.jpg" width="220" /></td>
-      <td><img src="screenshots/Screenshot_20260218_191714.jpg" width="220" /></td>
+      <td><img src="screenshots/Screenshot_20260218_191514.jpg" width="200" /></td>
+      <td><img src="screenshots/Screenshot_20260218_191533.jpg" width="200" /></td>
+      <td><img src="screenshots/Screenshot_20260218_191714.jpg" width="200" /></td>
     </tr>
     <tr>
-      <td><img src="screenshots/Screenshot_20260218_191804.jpg" width="220" /></td>
-      <td><img src="screenshots/Screenshot_20260218_191521_Permission%20controller.jpg" width="220" /></td>
-      <td><img src="screenshots/Screenshot_20260218_191453_Permission%20controller.jpg" width="220" /></td>
+      <td><img src="screenshots/Screenshot_20260218_191804.jpg" width="200" /></td>
+      <td><img src="screenshots/Screenshot_20260218_191521_Permission%20controller.jpg" width="200" /></td>
+      <td><img src="screenshots/Screenshot_20260218_191453_Permission%20controller.jpg" width="200" /></td>
     </tr>
     <tr>
-      <td><img src="screenshots/Screenshot_20260218_191814.jpg" width="220" /></td>
+      <td><img src="screenshots/Screenshot_20260218_191814.jpg" width="200" /></td>
     </tr>
   </table>
 </div>
@@ -79,4 +79,4 @@ flutter run
 
 ## Demo Link
 
-* **Loom Video:** [https://www.loom.com/share/3c05587b65c34ab49067a750cd140926]
+* **Loom Video:** https://www.loom.com/share/3c05587b65c34ab49067a750cd140926
